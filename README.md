@@ -6,15 +6,15 @@
 
 ```
 cd alma-k8s
-ansible all -m ping -v -i ansible/inventory/ --extra-vars "cluster_password=$CLUSTER_PASSWORD"
+ansible all -m ping -v --extra-vars "cluster_password=$CLUSTER_PASSWORD"
 ```
 
 ## Running playbook
 This could be the first run since you dont have nopassword in visudo the first time you create the cluster.
 ```
-ansible-playbook site.yml -i ansible/inventory/ --extra-vars "cluster_password=$CLUSTER_PASSWORD ansible_sudo_pass=$CLUSTER_PASSWORD"
+ansible-playbook site.yml --extra-vars "cluster_password=$CLUSTER_PASSWORD ansible_sudo_pass=$CLUSTER_PASSWORD"
 ```
 After having run the second time you may only use
 ```
-ansible-playbook site.yml -i ansible/inventory/ --extra-vars "cluster_password=$CLUSTER_PASSWORD"
+ansible-playbook site.yml --extra-vars "cluster_password=$CLUSTER_PASSWORD"
 ```

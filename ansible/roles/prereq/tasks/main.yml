@@ -2,11 +2,11 @@
 - debug: var=inventory_hostname
 
 - name: Update all packages
-  package:
+  ansible.builtin.package:
     name: '*'
     state: latest
 
-- name: Allow {{ admin_user }} run sudo commands without password
+- name: Allow run sudo commands without password
   community.general.sudoers:
     name: admin_role
     state: present
@@ -19,13 +19,13 @@
 
 - name: Set hostname for cluster participants
   ansible.builtin.hostname:
-    name: "{{ inventory_hostname }}"
+    name: "{{ inventory_hostname }}.{{ domain }}"
 
 - name: Add IP address of all hosts to all hosts
   ansible.builtin.lineinfile:
     dest: /etc/hosts
     regexp: '.*{{ item }}$'
-    line: "{{ hostvars[item].ansible_host }} {{item}}.{{domain}}"
+    line: "{{ hostvars[item].ansible_host }} {{ item }}.{ {domain }}"
     state: present
   when: hostvars[item].ansible_host is defined
   with_items: "{{ groups.all }}"
@@ -114,5 +114,26 @@
 - name: Enable containerd
   ansible.builtin.systemd_service:
     name: containerd
+    state: started
+    enabled: true
+
+- name: Kubernetes repo to yum repositories.
+  ansible.builtin.template:
+    src: kubernetes.repo.tmpl
+    dest: /etc/yum.repos.d/kubernetes.repo
+
+- name: Install all required kubernetes packages
+  ansible.builtin.package:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+    - kubelet
+    - kubeadm
+    - kubectl
+
+- name: Enable kubelet
+  ansible.builtin.systemd_service:
+    name: kubelet
     state: started
     enabled: true

@@ -1,8 +1,16 @@
 ---
 - hosts: alma_cluster
-  vars_files:
-  - ansible/inventory/alma_cluster/group_vars/all.yml
-  gather_facts: yes
-  become: yes
+  gather_facts: true
+  become: true
   roles:
     - role: prereq
+
+- hosts: controller
+  become: true
+  roles:
+    - role: k8s/controller
+
+- hosts: worker
+  become: true
+  roles:
+    - role: k8s/worker

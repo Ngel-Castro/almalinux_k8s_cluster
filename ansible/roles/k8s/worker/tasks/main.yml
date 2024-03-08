@@ -1,0 +1,24 @@
+---
+# - name: Enable control plane
+#   become: true
+#   ansible.builtin.shell: kubeadm init --control-plane-endpoint={{ inventory_hostname }}.{ {domain }}
+
+- name: Enable TCP firewall for worker
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  loop:
+    - 30000-32767/tcp
+    - 10250/tcp
+    - 179/tcp
+  notify: Reload firewall
+
+- name: Enable UDP firewall for worker
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  loop:
+    - 4789/udp
+  notify: Reload firewall
