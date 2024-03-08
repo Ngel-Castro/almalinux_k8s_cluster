@@ -1,0 +1,18 @@
+---
+all:
+  children:
+    alma_cluster:
+      children:
+        controller:
+          hosts:
+            controller1:
+              ansible_host: 192.168.0.22
+              ansible_user: "{{ admin_user }}"
+              ansible_password: "{{ cluster_password }}"
+        node:
+          hosts:
+            worker1:
+              ansible_host: 192.168.0.158
+              ansible_user: "{{ admin_user }}"
+              #ansible_ssh_private_key_file: /path/file
+              ansible_password: "{{ cluster_password }}"

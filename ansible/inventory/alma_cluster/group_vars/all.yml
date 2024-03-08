@@ -1,0 +1,2 @@
+admin_user: acastro
+controller_ip: "{{ hostvars[groups['controller'][0]]['ansible_host'] | default(groups['controller'][0]) }}"

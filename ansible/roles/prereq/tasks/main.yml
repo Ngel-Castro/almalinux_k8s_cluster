@@ -1,0 +1,14 @@
+---
+- debug: var=inventory_hostname
+
+- name: Allow {{ admin_user }} run sudo commands without password
+  community.general.sudoers:
+    name: admin_role
+    state: present
+    user: "{{ admin_user }}"
+    commands: ALL
+
+- name: Set SELinux to disabled state
+  selinux:
+    state: disabled
+  when: ansible_distribution in ['CentOS', 'Red Hat Enterprise Linux']
