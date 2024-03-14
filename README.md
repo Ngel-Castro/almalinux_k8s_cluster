@@ -1,5 +1,5 @@
 # Alma k8s cluster
-**This is still working in progress. following (this blog post)[https://www.linuxtechi.com/install-kubernetes-on-rockylinux-almalinux/]**
+**This is still working in progress. following [this blog post](https://www.linuxtechi.com/install-kubernetes-on-rockylinux-almalinux/)**
 Creating the cluster 
 
 ```
