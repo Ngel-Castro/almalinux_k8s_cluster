@@ -1,4 +1,8 @@
-terraform/clusters/.terraform
-terraform/clusters/.terraform.lock.hcl
-terraform/clusters/proxmox/.terraform
-terraform/clusters/proxmox/.terraform.lock.hcl
+# Ignore terraform env specific files
+*/*/.terraform
+*/*/.terraform.lock.hcl
+*/*/*/.terraform
+*/*/*/.terraform.lock.hcl
+*/*/*/terraform.tfstate
+*/*/*/terraform.tfstate.backup
+*/*/*/.terraform.tfstate.lock.info

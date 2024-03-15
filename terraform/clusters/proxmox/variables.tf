@@ -7,10 +7,20 @@ variable "proxmox_host" {
 variable "proxmox_token_id" {
   description = "Proxmox Token user@pam!token_id"
   type        = string
-  default     = "terraform-admin@pam!terraform"
+  default     = "terraform-prov@pve!terraform"
 }
 
 variable "proxmox_token_secret" {
   description = "Proxmox token secret"
   type        = string
+}
+
+variable "controller" {
+  description = "Number of controllers"
+  type        = number
+}
+
+variable "worker" {
+  description = "Number of workers"
+  type        = number
 }
