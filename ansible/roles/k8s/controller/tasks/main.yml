@@ -28,3 +28,16 @@
   loop:
     - 4789/udp
   notify: Reload firewall
+
+- name: Initialize Kubernetes master
+  command: kubeadm init --control-plane-endpoint={{ inventory_hostname }}.{{ domain }}
+  register: kubeadm_init_output
+  changed_when: kubeadm_init_output.stdout.find('Your Kubernetes control-plane has initialized successfully!') != -1
+  when: inventory_hostname == 'controller1'
+
+- name: Save join command and kube config
+  set_fact:
+    join_command: "{{ kubadm_init_output.stdout_lines[-1] }}"
+
+- name: Join controller2 to the cluster
+  command: "{{ hostvars[groups['controller'][0]]['join_command'] }}"
