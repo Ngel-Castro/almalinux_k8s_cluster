@@ -1,2 +1,4 @@
 terraform/clusters/.terraform
 terraform/clusters/.terraform.lock.hcl
+terraform/clusters/proxmox/.terraform
+terraform/clusters/proxmox/.terraform.lock.hcl
