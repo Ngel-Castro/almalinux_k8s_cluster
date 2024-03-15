@@ -23,7 +23,7 @@ kubeadm join ${controller}:6443 --token ${YOUR_CLUSTER_WORKER_TOKEN} \
 
 Once you have access to `kubectl` and API access to your cluster; you need to use a network addon CNI, in this case we will use calico.
 ```
-kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/calico.yaml
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.2/manifests/calico.yaml
 ```
 
 That should make your nodes ready to run workloads.

@@ -39,5 +39,12 @@
   set_fact:
     join_command: "{{ kubadm_init_output.stdout_lines[-1] }}"
 
+- name: Copy kube config to local machine
+  fetch:
+    src: "/etc/kubernetes/admin.conf"
+    dest: "{{ playbook_dir }}/admin.conf"
+    flat: yes
+  when: inventory_hostname == 'controller1'
+
 - name: Join controller2 to the cluster
   command: "{{ hostvars[groups['controller'][0]]['join_command'] }}"
