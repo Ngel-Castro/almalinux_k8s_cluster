@@ -45,7 +45,6 @@ After having run the second time you may only use
 ```
 ansible-playbook site.yml --extra-vars "cluster_password=$CLUSTER_PASSWORD"
 ```
-<<<<<<< HEAD
 
 ### Argo CD installation
 
@@ -54,5 +53,3 @@ export ARGOCD_VERSION=<desired argo cd release version (e.g. v2.7.0)>
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/$ARGOCD_VERSION/manifests/install.yaml
 ```
-=======
->>>>>>> main
