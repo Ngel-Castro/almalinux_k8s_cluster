@@ -35,9 +35,9 @@
   changed_when: kubeadm_init_output.stdout.find('Your Kubernetes control-plane has initialized successfully!') != -1
   when: inventory_hostname == 'controller1'
 
-- name: Save join command and kube config
+- name: Save join
   set_fact:
-    join_command: "{{ kubadm_init_output.stdout_lines[-1] }}"
+    join_command: "{{ kubeadm_init_output.stdout_lines[-1] }}"
 
 - name: Copy kube config to local machine
   fetch:
