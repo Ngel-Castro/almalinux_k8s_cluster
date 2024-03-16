@@ -6,22 +6,22 @@ all:
         controller:
           hosts:
             controller1:
-              ansible_host: 192.168.0.240
+              ansible_host: 192.168.0.19
               ansible_user: "{{ admin_user }}"
               ansible_password: "{{ cluster_password }}"
             controller2:
-              ansible_host: 192.168.0.42
+              ansible_host: 192.168.0.21
               ansible_user: "{{ admin_user }}"
               ansible_password: "{{ cluster_password }}"
         worker:
           hosts:
             worker1:
-              ansible_host: 192.168.0.86
+              ansible_host: 192.168.0.91
               ansible_user: "{{ admin_user }}"
               #ansible_ssh_private_key_file: /path/file
               ansible_password: "{{ cluster_password }}"
             worker2:
-              ansible_host: 192.168.0.22
+              ansible_host: 192.168.0.161
               ansible_user: "{{ admin_user }}"
               #ansible_ssh_private_key_file: /path/file
               ansible_password: "{{ cluster_password }}"

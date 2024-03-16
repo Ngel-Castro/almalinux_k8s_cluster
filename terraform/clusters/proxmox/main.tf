@@ -4,18 +4,26 @@ resource "proxmox_vm_qemu" "controller" {
     target_node = "proxmox"
     memory      = 3072
     cores       = 2
-    #full_clone  = true
+    scsihw      = "virtio-scsi-single"
 
     ### or for a Clone VM operation
     clone = "cluster-template"
-
     disks {
-        virtio {
-            virtio0 {
+        scsi {
+            scsi0 {
                 disk {
-                iothread = true
-                size     = 32
-                storage  = "local-lvm"
+                    backup             = true
+                    cache              = "none"
+                    discard            = true
+                    emulatessd         = true
+                    iothread           = true
+                    mbps_r_burst       = 0.0
+                    mbps_r_concurrent  = 0.0
+                    mbps_wr_burst      = 0.0
+                    mbps_wr_concurrent = 0.0
+                    replicate          = true
+                    size               = 32
+                    storage            = "samsung-ssd"
                 }
             }
         }
@@ -34,18 +42,26 @@ resource "proxmox_vm_qemu" "worker" {
     target_node = "proxmox"
     memory      = 4096
     cores       = 2
-    #full_clone  = true
+    scsihw      = "virtio-scsi-single"
 
     ### or for a Clone VM operation
     clone = "cluster-template"
-
     disks {
-        virtio {
-            virtio0 {
+        scsi {
+            scsi0 {
                 disk {
-                iothread = true
-                size     = 32
-                storage  = "local-lvm"
+                    backup             = true
+                    cache              = "none"
+                    discard            = true
+                    emulatessd         = true
+                    iothread           = true
+                    mbps_r_burst       = 0.0
+                    mbps_r_concurrent  = 0.0
+                    mbps_wr_burst      = 0.0
+                    mbps_wr_concurrent = 0.0
+                    replicate          = true
+                    size               = 32
+                    storage            = "samsung-ssd"
                 }
             }
         }
