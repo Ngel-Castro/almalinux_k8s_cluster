@@ -36,8 +36,8 @@
   when: inventory_hostname == 'controller1'
 
 - name: Save join
-  set_fact:
-    join_command: "{{ kubeadm_init_output.stdout_lines[-1] }}"
+  ansible.builtin.set_fact:
+    join_command: "{{ kubeadm_init_output.stdout_lines[-2:] }}"
 
 - name: Copy kube config to local machine
   fetch:
