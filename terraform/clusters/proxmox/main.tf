@@ -4,7 +4,7 @@ resource "proxmox_vm_qemu" "controller" {
     target_node = "proxmox"
     memory      = 3072
     cores       = 2
-    full_clone  = true
+    #full_clone  = true
 
     ### or for a Clone VM operation
     clone = "cluster-template"
@@ -29,12 +29,12 @@ resource "proxmox_vm_qemu" "controller" {
 }
 
 resource "proxmox_vm_qemu" "worker" {
-    count       = var.controller
+    count       = var.worker
     name        = "worker${count.index + 1}"
     target_node = "proxmox"
     memory      = 4096
     cores       = 2
-    full_clone  = true
+    #full_clone  = true
 
     ### or for a Clone VM operation
     clone = "cluster-template"
