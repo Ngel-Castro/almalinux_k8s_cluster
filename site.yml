@@ -10,7 +10,8 @@
   roles:
     - role: k8s/controller
 
-- hosts: worker
+- name: Adding workers
+  hosts: worker
   become: true
   roles:
     - role: k8s/worker
@@ -19,3 +20,8 @@
   become: true
   roles:
     - role: k8s/cluster
+
+- name: Extra controllers
+  hosts: controller
+  tasks:
+  - include_tasks: ansible/roles/k8s/controller/tasks/extra_controllers.yml

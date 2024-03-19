@@ -23,5 +23,17 @@
     - 4789/udp
   notify: Reload firewall
 
+- name: Check if the worker has been initialized
+  stat:
+    path: "{{ ansible_env.HOME }}/worker_initialized"
+  register: worker_initialized_file
+
 - name: Join worker nodes to the cluster
   command: "{{ hostvars[groups['controller'][0]]['join_command'] }}"
+  when: worker_initialized_file.stat.exists is not defined or worker_initialized_file.stat.exists == false
+
+- name: Create initialized flag file for workers
+  file:
+    path: "{{ ansible_env.HOME }}/worker_initialized"
+    state: touch
+  when: worker_initialized_file.stat.exists is not defined or worker_initialized_file.stat.exists == false

@@ -38,3 +38,9 @@ variable "storage" {
   type        = string
   default     = "samsung_ssd"
 }
+
+variable "full_clone" {
+  description = "If you required full clone or not"
+  type        = bool
+  default     = false
+}

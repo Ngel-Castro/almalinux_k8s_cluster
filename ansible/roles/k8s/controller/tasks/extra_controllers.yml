@@ -1,0 +1,14 @@
+- name: Check if the worker has been initialized
+  stat:
+    path: "{{ ansible_env.HOME }}/controller_joined"
+  register: controller_joined
+
+- name: Join other controllers to the cluster
+  command: "sudo {{ hostvars[groups['controller'][0]]['join_command'] }} --control-plane --certificate-key {{ hostvars[groups['controller'][0]]['cert_key'] }}"
+  when: inventory_hostname != 'controller1' and (controller_joined.stat.exists is not defined or controller_joined.stat.exists == false)
+
+- name: Create initialized flag file for workers
+  file:
+    path: "{{ ansible_env.HOME }}/controller_joined"
+    state: touch
+  when: controller_joined.stat.exists is not defined or controller_joined.stat.exists == false

@@ -5,6 +5,7 @@ resource "proxmox_vm_qemu" "controller" {
     memory      = 3072
     cores       = 2
     scsihw      = "virtio-scsi-single"
+    full_clone  = var.full_clone
 
     ### or for a Clone VM operation
     clone = "cluster-template"
