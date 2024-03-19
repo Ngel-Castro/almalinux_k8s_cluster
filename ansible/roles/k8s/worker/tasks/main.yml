@@ -24,4 +24,4 @@
   notify: Reload firewall
 
 - name: Join worker nodes to the cluster
-  command: "{{ hostvars[groups['controller'][0]]['join_command'] }}"
+  command: "sudo kubeadm join --token {{ hostvars[groups['controller'][0]]['join_token'] }} --discovery-token-ca-cert-hash sha256:{{ hostvars[groups['controller'][0]]['sha_hash'] }}"

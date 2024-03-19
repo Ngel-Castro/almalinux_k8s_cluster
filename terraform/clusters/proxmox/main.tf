@@ -1,7 +1,7 @@
 resource "proxmox_vm_qemu" "controller" {
     count       = var.controller
     name        = "controller${count.index + 1}"
-    target_node = "proxmox"
+    target_node = var.target_node
     memory      = 3072
     cores       = 2
     scsihw      = "virtio-scsi-single"
@@ -23,7 +23,7 @@ resource "proxmox_vm_qemu" "controller" {
                     mbps_wr_concurrent = 0.0
                     replicate          = true
                     size               = 32
-                    storage            = "samsung-ssd"
+                    storage            = var.storage
                 }
             }
         }
@@ -61,7 +61,7 @@ resource "proxmox_vm_qemu" "worker" {
                     mbps_wr_concurrent = 0.0
                     replicate          = true
                     size               = 32
-                    storage            = "samsung-ssd"
+                    storage            = var.storage
                 }
             }
         }

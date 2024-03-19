@@ -10,12 +10,11 @@
   roles:
     - role: k8s/controller
 
-- hosts: worker
-  become: true
-  roles:
-    - role: k8s/worker
-
 - hosts: localhost
   become: true
   roles:
     - role: k8s/cluster
+- hosts: worker
+  become: true
+  roles:
+    - role: k8s/worker

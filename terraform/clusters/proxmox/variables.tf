@@ -18,9 +18,23 @@ variable "proxmox_token_secret" {
 variable "controller" {
   description = "Number of controllers"
   type        = number
+  default      = 1
 }
 
 variable "worker" {
   description = "Number of workers"
   type        = number
+  default     = 1
+}
+
+variable "target_node" {
+  description = "Target node where the VM will be allocated"
+  type        = string
+  default     = "proxmox"
+}
+
+variable "storage" {
+  description = "Storage location in PROXMOX node"
+  type        = string
+  default     = "samsung_ssd"
 }
