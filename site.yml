@@ -24,4 +24,4 @@
 - name: Extra controllers
   hosts: controller
   tasks:
-  - include_tasks: k8s/controller/tasks/extra_controllers.yml
+  - include_tasks: ansible/roles/k8s/controller/tasks/extra_controllers.yml
