@@ -40,9 +40,15 @@
   register: join_command
   when: inventory_hostname == 'controller1'
 
+- name: Get cert key for controll planes
+  command: sudo kubeadm init phase upload-certs --upload-certs | grep -vw -e certificate -e Namespace
+  register: cert-key
+  when: inventory_hostname == 'controller1'
+
 - name: Setting up Joining command for others
   ansible.builtin.set_fact:
     join_command: "{{ join_command.stdout }}"
+    cert_key: "{{ cert-key.stdout }}"
   when: inventory_hostname == 'controller1'
 
 
@@ -53,6 +59,12 @@
     flat: yes
   when: inventory_hostname == 'controller1'
 
+- name: Apply Calico manifest
+  command: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.2/manifests/calico.yaml
+  environment:
+    KUBECONFIG: "{{ playbook_dir }}/admin.conf"
+  delegate_to: localhost
+
 - name: Join controller2 to the cluster
-  command: "{{ hostvars[groups['controller'][0]]['join_command'] }}" --control-plane"
+  command: "{{ hostvars[groups['controller'][0]]['join_command'] }} --control-plane --certificate-key {{ hostvars[groups['controller'][0]]['cert_key'] }}"
   when: inventory_hostname != 'controller1'

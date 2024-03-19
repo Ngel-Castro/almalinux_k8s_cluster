@@ -15,7 +15,7 @@
   roles:
     - role: k8s/worker
 
-- hosts: localhost
-  become: true
-  roles:
-    - role: k8s/cluster
+# - hosts: localhost
+#   become: true
+#   roles:
+#     - role: k8s/cluster
