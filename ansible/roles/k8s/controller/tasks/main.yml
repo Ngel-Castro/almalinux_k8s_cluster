@@ -40,7 +40,7 @@
   register: join_command
   when: inventory_hostname == 'controller1'
 
-- name: Get SHA hash from output
+- name: Setting up Joining command for others
   ansible.builtin.set_fact:
     join_command: "{{ join_command.stdout }}"
   when: inventory_hostname == 'controller1'
@@ -54,5 +54,5 @@
   when: inventory_hostname == 'controller1'
 
 - name: Join controller2 to the cluster
-  command: "{{ join_command.stdout }} --control-plane"
+  command: "{{ hostvars[groups['controller'][0]]['join_command'] }}" --control-plane"
   when: inventory_hostname != 'controller1'
