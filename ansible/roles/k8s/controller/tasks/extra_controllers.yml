@@ -1,0 +1,3 @@
+- name: Join other controllers to the cluster
+  command: "sudo {{ hostvars[groups['controller'][0]]['join_command'] }} --control-plane --certificate-key {{ hostvars[groups['controller'][0]]['cert_key'] }}"
+  when: inventory_hostname != 'controller1'

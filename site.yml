@@ -10,12 +10,18 @@
   roles:
     - role: k8s/controller
 
-- hosts: worker
+- name: Adding workers
+  hosts: worker
   become: true
   roles:
     - role: k8s/worker
 
-# - hosts: localhost
-#   become: true
-#   roles:
-#     - role: k8s/cluster
+- hosts: localhost
+  become: true
+  roles:
+    - role: k8s/cluster
+
+- name: Extra controllers
+  hosts: controller
+  tasks:
+  - include_tasks: k8s/controller/tasks/extra_controllers.yml
