@@ -1,0 +1,11 @@
+# Ignore terraform env specific files
+*/*/.terraform
+*/*/.terraform.lock.hcl
+*/*/*/.terraform
+*/*/*/.terraform.lock.hcl
+*/*/*/terraform.tfstate
+*/*/*/terraform.tfstate.backup
+*/*/*/.terraform.tfstate.lock.info
+
+# Local Kubeconfig
+admin.conf

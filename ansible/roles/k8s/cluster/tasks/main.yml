@@ -1,0 +1,5 @@
+- name: Apply Calico manifest
+  command: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.2/manifests/calico.yaml
+  environment:
+    KUBECONFIG: "{{ playbook_dir }}/admin.conf"
+  delegate_to: localhost

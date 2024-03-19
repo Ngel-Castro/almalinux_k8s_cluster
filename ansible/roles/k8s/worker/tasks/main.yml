@@ -22,3 +22,6 @@
   loop:
     - 4789/udp
   notify: Reload firewall
+
+- name: Join worker nodes to the cluster
+  command: "{{ hostvars[groups['controller'][0]]['join_command'] }}"

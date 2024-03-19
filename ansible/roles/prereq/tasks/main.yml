@@ -25,7 +25,7 @@
   ansible.builtin.lineinfile:
     dest: /etc/hosts
     regexp: '.*{{ item }}$'
-    line: "{{ hostvars[item].ansible_host }} {{ item }}.{ {domain }}"
+    line: "{{ hostvars[item].ansible_host }} {{ item }}.{{ domain }}"
     state: present
   when: hostvars[item].ansible_host is defined
   with_items: "{{ groups.all }}"
@@ -123,14 +123,7 @@
     dest: /etc/yum.repos.d/kubernetes.repo
 
 - name: Install all required kubernetes packages
-  ansible.builtin.package:
-    name: "{{ packages }}"
-    state: present
-  vars:
-    packages:
-    - kubelet
-    - kubeadm
-    - kubectl
+  ansible.builtin.shell: yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
 - name: Enable kubelet
   ansible.builtin.systemd_service:
