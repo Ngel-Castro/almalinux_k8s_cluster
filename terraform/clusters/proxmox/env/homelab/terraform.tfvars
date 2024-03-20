@@ -4,3 +4,4 @@ worker            = 2
 target_node       = "proxmox"
 storage           = "samsung-ssd"
 full_clone        = true
+template_name     = "cluster-testing"
