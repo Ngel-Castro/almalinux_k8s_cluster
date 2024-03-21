@@ -1,7 +1,7 @@
 output "controllers_ips" {
-  value = local.controller_ips
+  value = tomap({"controllers" = local.controller_ips})
 }
 
 output "workers_ips" {
-  value = local.worker_ips
+  value = tomap({"workers" = local.worker_ips})
 }
