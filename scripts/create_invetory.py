@@ -1,17 +1,13 @@
 # Import YAML to help in generating a properly formatted string
 import yaml
+import json
 
-# Define the provided map with controller and worker IPs
-hosts_map = {
-    "controllers_ips": {
-        "controller1": "192.168.0.1",
-        "controller2": "192.168.0.2",
-    },
-    "workers_ips": {
-        "worker1": "192.168.0.100",
-        "worker2": "192.168.0.101",
-    }
-}
+# Path to the 'hosts_map.json' file
+hosts_map_path = 'hosts_map.json'
+
+# Reading the JSON data from 'hosts_map.json' and assigning it to a variable
+with open(hosts_map_path, 'r') as json_file:
+    hosts_map = json.load(json_file)
 
 # Function to generate the YAML configuration based on the map
 def generate_yaml_config(hosts_map):
@@ -34,7 +30,7 @@ def generate_yaml_config(hosts_map):
     }
     
     # Populate controllers
-    for controller_name, ip_address in hosts_map["controllers_ips"].items():
+    for controller_name, ip_address in hosts_map["controllers"].items():
         config["all"]["children"]["alma_cluster"]["children"]["controller"]["hosts"][controller_name] = {
             "ansible_host": ip_address,
             "ansible_user": "{{ admin_user }}",
@@ -42,7 +38,7 @@ def generate_yaml_config(hosts_map):
         }
         
     # Populate workers
-    for worker_name, ip_address in hosts_map["workers_ips"].items():
+    for worker_name, ip_address in hosts_map["workers"].items():
         config["all"]["children"]["alma_cluster"]["children"]["worker"]["hosts"][worker_name] = {
             "ansible_host": ip_address,
             "ansible_user": "{{ admin_user }}",
@@ -58,7 +54,7 @@ def generate_yaml_config(hosts_map):
 yaml_config = generate_yaml_config(hosts_map)
 
 # Save the configuration to a file
-with open("ansible_inventory.yml", "w") as file:
+with open("inventory.yml", "w") as file:
     file.write(yaml_config)
 
 # The above code saves the YAML configuration to 'ansible_inventory.yml' in the current directory.
