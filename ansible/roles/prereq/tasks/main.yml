@@ -1,11 +1,6 @@
 ---
 - debug: var=inventory_hostname
 
-- name: Update all packages
-  ansible.builtin.package:
-    name: '*'
-    state: latest
-
 - name: Allow run sudo commands without password
   community.general.sudoers:
     name: admin_role
