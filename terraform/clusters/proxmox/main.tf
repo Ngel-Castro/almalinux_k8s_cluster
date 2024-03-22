@@ -6,9 +6,11 @@ resource "proxmox_vm_qemu" "controller" {
     cores       = 2
     scsihw      = "virtio-scsi-single"
     full_clone  = var.full_clone
+    agent       = 1
+    #ipconfig0   = "dhcp"
 
     ### or for a Clone VM operation
-    clone = "cluster-template"
+    clone = var.template_name
     disks {
         scsi {
             scsi0 {
@@ -44,9 +46,12 @@ resource "proxmox_vm_qemu" "worker" {
     memory      = 4096
     cores       = 2
     scsihw      = "virtio-scsi-single"
+    full_clone  = var.full_clone
+    agent       = 1
+    #ipconfig0   = "dhcp"
 
     ### or for a Clone VM operation
-    clone = "cluster-template"
+    clone = var.template_name
     disks {
         scsi {
             scsi0 {

@@ -44,3 +44,9 @@ variable "full_clone" {
   type        = bool
   default     = false
 }
+
+variable "template_name" {
+  description = "If you required full clone or not"
+  type        = string
+  default     = "cluster-template"
+}
