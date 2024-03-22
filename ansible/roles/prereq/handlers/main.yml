@@ -2,4 +2,3 @@
 - name: Reload sysctl
   become: true
   ansible.builtin.command: sudo sysctl --system
-  

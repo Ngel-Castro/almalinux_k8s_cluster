@@ -1,6 +1,6 @@
 # Alma k8s cluster
 **This is still working in progress. following [this blog post](https://www.linuxtechi.com/install-kubernetes-on-rockylinux-almalinux/)**
-Creating the cluster 
+Creating the cluster
 
 ```
 export controller=`Your DNS record for controller`
