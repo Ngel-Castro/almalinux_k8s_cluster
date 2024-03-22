@@ -1,4 +1,3 @@
----
 all:
   children:
     alma_cluster:
@@ -6,22 +5,20 @@ all:
         controller:
           hosts:
             controller1:
-              ansible_host: 192.168.0.63
-              ansible_user: "{{ admin_user }}"
-              ansible_password: "{{ cluster_password }}"
+              ansible_host: 192.168.0.147
+              ansible_user: '{{ admin_user }}'
+              ansible_password: '{{ cluster_password }}'
             controller2:
-              ansible_host: 192.168.0.68
-              ansible_user: "{{ admin_user }}"
-              ansible_password: "{{ cluster_password }}"
+              ansible_host: 192.168.0.204
+              ansible_user: '{{ admin_user }}'
+              ansible_password: '{{ cluster_password }}'
         worker:
           hosts:
             worker1:
-              ansible_host: 192.168.0.141
-              ansible_user: "{{ admin_user }}"
-              #ansible_ssh_private_key_file: /path/file
-              ansible_password: "{{ cluster_password }}"
+              ansible_host: 192.168.0.206
+              ansible_user: '{{ admin_user }}'
+              ansible_password: '{{ cluster_password }}'
             worker2:
-              ansible_host: 192.168.0.112
-              ansible_user: "{{ admin_user }}"
-              #ansible_ssh_private_key_file: /path/file
-              ansible_password: "{{ cluster_password }}"
+              ansible_host: 192.168.0.20
+              ansible_user: '{{ admin_user }}'
+              ansible_password: '{{ cluster_password }}'
