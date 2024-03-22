@@ -9,3 +9,6 @@
 
 # Local Kubeconfig
 admin.conf
+
+# ACT ignores
+.secrets

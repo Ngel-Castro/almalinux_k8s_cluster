@@ -1,0 +1,43 @@
+name: cluster boostrap locally
+on: push
+
+jobs:
+  terraform-bootstrap:
+    defaults:
+      run:
+        working-directory: terraform/clusters/proxmox
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: hashicorp/setup-terraform@v3
+
+    - name: Terraform init
+      run: terraform init
+
+    - name: Terraform plan
+      run: terraform plan -var-file=${TFVARS} -var="proxmox_token_id=${PROXMOX_TOKEN_ID}" -var="proxmox_token_secret=${PROXMOX_TOKEN_SECRET}"
+      env:
+        PROXMOX_TOKEN_SECRET: ${{ secrets.proxmox_token_secret }}
+        PROXMOX_TOKEN_ID: ${{ secrets.proxmox_token_id }}
+
+
+
+  ansible-bootstrap:
+    needs: [terraform-bootstrap]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install and configure Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: 1.7.1
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+    - name: Set up cache
+      uses: actions/cache@v2
+      id: cached-poetry-dependencies
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+    - name: Install dependencies
+      run: poetry install
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'

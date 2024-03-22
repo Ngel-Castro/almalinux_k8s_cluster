@@ -53,3 +53,19 @@ export ARGOCD_VERSION=<desired argo cd release version (e.g. v2.7.0)>
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/$ARGOCD_VERSION/manifests/install.yaml
 ```
+
+
+## act locally Optional running with rancher desktop
+
+Create your `.secrets` file with content:
+```
+proxmox_token_secret=YourProxmoxSecretToken   # Refer to proxmox provider documentantion
+proxmox_token_id=YourProxmoxIDTerraform       # Refer to proxmox provider documentantion
+cluster_password=YourPassword                 # < Admin user for the VMS
+```
+
+```
+export DOCKER_HOST=unix://$HOME/.rd/docker.sock
+export tfvars=/Users/angel.castrobasurto/Projects/almalinux_k8s_cluster/terraform/clusters/proxmox/env/homelab/terraform.tfvars
+act --secret-file=.secrets --env TFVARS=${tfvars}
+```
