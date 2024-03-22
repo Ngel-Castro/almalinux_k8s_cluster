@@ -28,7 +28,7 @@ def generate_yaml_config(hosts_map):
             }
         }
     }
-    
+
     # Populate controllers
     for controller_name, ip_address in hosts_map["controllers"].items():
         config["all"]["children"]["alma_cluster"]["children"]["controller"]["hosts"][controller_name] = {
@@ -36,7 +36,7 @@ def generate_yaml_config(hosts_map):
             "ansible_user": "{{ admin_user }}",
             "ansible_password": "{{ cluster_password }}"
         }
-        
+
     # Populate workers
     for worker_name, ip_address in hosts_map["workers"].items():
         config["all"]["children"]["alma_cluster"]["children"]["worker"]["hosts"][worker_name] = {
@@ -44,10 +44,10 @@ def generate_yaml_config(hosts_map):
             "ansible_user": "{{ admin_user }}",
             "ansible_password": "{{ cluster_password }}"
         }
-        
+
     # Convert the config dictionary to a YAML formatted string
     yaml_config = yaml.dump(config, sort_keys=False)
-    
+
     return yaml_config
 
 # Generate the YAML configuration

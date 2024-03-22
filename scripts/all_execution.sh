@@ -13,6 +13,6 @@ mv inventory.yml ../../../ansible/inventory/alma_cluster/inventory.yml
 cd ../../../
 ansible-playbook site.yml --extra-vars "cluster_password=$CLUSTER_PASSWORD ansible_sudo_pass=$CLUSTER_PASSWORD"
 
-#TODO: 
+#TODO:
 #git checkouts ansible/inventory/alma_cluster/inventory.yml
-#creates a branch and pull request for main 
+#creates a branch and pull request for main
