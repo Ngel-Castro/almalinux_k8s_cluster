@@ -70,4 +70,3 @@
     dest: "{{ playbook_dir }}/admin.conf"
     flat: yes
   when: inventory_hostname == 'controller1'
-
