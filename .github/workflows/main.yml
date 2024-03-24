@@ -13,6 +13,13 @@ jobs:
     defaults:
       run:
         working-directory: terraform/clusters/proxmox
+      env:
+        PROXMOX_TOKEN_SECRET: ${{ secrets.proxmox_token_secret }}
+        PROXMOX_TOKEN_ID: ${{ secrets.proxmox_token_id }}
+        AWS_ACCESS_KEY_ID=: ${{ secrets.aws_access_key }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
+        AWS_DEFAULT_REGION: us-east-1
+
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -29,9 +36,6 @@ jobs:
 
     - name: Terraform apply
       run: terraform apply --auto-approve -var-file=${TFVARS} -var="proxmox_token_id=${PROXMOX_TOKEN_ID}" -var="proxmox_token_secret=${PROXMOX_TOKEN_SECRET}"
-      env:
-        PROXMOX_TOKEN_SECRET: ${{ secrets.proxmox_token_secret }}
-        PROXMOX_TOKEN_ID: ${{ secrets.proxmox_token_id }}
 
     - name: Terraform outputs
       run: |
