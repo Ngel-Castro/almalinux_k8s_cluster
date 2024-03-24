@@ -16,13 +16,20 @@ jobs:
       env:
         PROXMOX_TOKEN_SECRET: ${{ secrets.proxmox_token_secret }}
         PROXMOX_TOKEN_ID: ${{ secrets.proxmox_token_id }}
-        AWS_ACCESS_KEY_ID=: ${{ secrets.aws_access_key }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
         AWS_DEFAULT_REGION: us-east-1
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
 
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Set up AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.aws_access_key }}
+        aws-secret-access-key: ${{ secrets.aws_secret_key }}
+        aws-region: us-east-1
+
     - uses: hashicorp/setup-terraform@v3
 
     - name: Terraform init
@@ -43,7 +50,6 @@ jobs:
         terraform output -json hosts_map > hosts_map.json
         echo ${HOSTS_MAP_JSON}
         cp $HOSTS_MAP_JSON artifacts/
-        cp terraform.tfstate artifacts/
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
