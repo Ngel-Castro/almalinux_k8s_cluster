@@ -1,6 +1,13 @@
 name: cluster boostrap locally
 on: fork
 
+defautls:
+  run:
+    env:
+      HOSTS_MAP_JSON: hosts_map.json
+      OUTPUT_INVETORY_YAML: inventory.yml 
+      ANSIBLE_INVENTORY_YAML: ansible/inventory/alma_cluster/inventory.yml
+
 jobs:
   terraform-bootstrap:
     defaults:
@@ -20,12 +27,27 @@ jobs:
         PROXMOX_TOKEN_SECRET: ${{ secrets.proxmox_token_secret }}
         PROXMOX_TOKEN_ID: ${{ secrets.proxmox_token_id }}
 
+    - name: Terraform outputs
+      run: |
+        mkdir -p artifacts
+        terraform output -json hosts_map > ${HOSTS_MAP_JSON}
+        cp ${HOSTS_MAP_JSON} artifacts/
 
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: config-files
+        path: artifacts/
 
   ansible-bootstrap:
     needs: [terraform-bootstrap]
     runs-on: ubuntu-latest
     steps:
+    - name: Download Artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: config-files
+
     - name: Install and configure Poetry
       uses: snok/install-poetry@v1
       with:
@@ -41,3 +63,13 @@ jobs:
     - name: Install dependencies
       run: poetry install
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+    
+    - name: Run ansible
+      run: |
+       python scripts/create_invetory.py
+       mv ${OUTPUT_INVETORY_YAML} ${ANSIBLE_INVENTORY_YAML}
+       ansible-playbook site.yml --extra-vars "cluster_password=$CLUSTER_PASSWORD ansible_sudo_pass=$CLUSTER_PASSWORD"
+      env:
+        CLUSTER_PASSWORD: ${{ secrets.cluster_password }}
+
+

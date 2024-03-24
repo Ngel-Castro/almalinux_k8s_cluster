@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "alma-k8s"
+name = "almalinux_k8s_cluster"
 version = "0.1.0"
 description = ""
 authors = ["acastro <castrobasurto.angel@gmail.com>"]
@@ -18,3 +18,4 @@ pyjson = "^1.4.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
