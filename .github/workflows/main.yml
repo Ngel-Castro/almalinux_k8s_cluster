@@ -21,8 +21,8 @@ jobs:
     - name: Terraform init
       run: terraform init
 
-    - name: Terraform plan
-      run: terraform plan -var-file=${TFVARS} -var="proxmox_token_id=${PROXMOX_TOKEN_ID}" -var="proxmox_token_secret=${PROXMOX_TOKEN_SECRET}"
+    - name: Terraform apply
+      run: terraform apply --auto-approve -var-file=${TFVARS} -var="proxmox_token_id=${PROXMOX_TOKEN_ID}" -var="proxmox_token_secret=${PROXMOX_TOKEN_SECRET}"
       env:
         PROXMOX_TOKEN_SECRET: ${{ secrets.proxmox_token_secret }}
         PROXMOX_TOKEN_ID: ${{ secrets.proxmox_token_id }}
