@@ -37,6 +37,7 @@ jobs:
       run: |
         mkdir -p artifacts
         terraform output -json hosts_map > hosts_map.json
+        echo ${HOSTS_MAP_JSON}
         cp $HOSTS_MAP_JSON artifacts/
         cp terraform.tfstate artifacts/
 
