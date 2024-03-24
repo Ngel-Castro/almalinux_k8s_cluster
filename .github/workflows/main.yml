@@ -21,6 +21,12 @@ jobs:
     - name: Terraform init
       run: terraform init
 
+    - name: Terraform plan
+      run: terraform plan -var-file=${TFVARS} -var="proxmox_token_id=${PROXMOX_TOKEN_ID}" -var="proxmox_token_secret=${PROXMOX_TOKEN_SECRET}"
+      env:
+        PROXMOX_TOKEN_SECRET: ${{ secrets.proxmox_token_secret }}
+        PROXMOX_TOKEN_ID: ${{ secrets.proxmox_token_id }}
+
     - name: Terraform apply
       run: terraform apply --auto-approve -var-file=${TFVARS} -var="proxmox_token_id=${PROXMOX_TOKEN_ID}" -var="proxmox_token_secret=${PROXMOX_TOKEN_SECRET}"
       env:
@@ -32,6 +38,7 @@ jobs:
         mkdir -p artifacts
         terraform output -json hosts_map > ${HOSTS_MAP_JSON}
         cp ${HOSTS_MAP_JSON} artifacts/
+        cp terraform.tfstate artifacts/
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
