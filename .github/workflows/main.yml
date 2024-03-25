@@ -7,6 +7,7 @@ env:
   HOSTS_MAP_JSON: hosts_map.json
   OUTPUT_INVETORY_YAML: inventory.yml 
   ANSIBLE_INVENTORY_YAML: ansible/inventory/alma_cluster/inventory.yml
+  CLUSTER_PASSWORD: ${{ secrets.cluster_password }}
 
 jobs:
   terraform-bootstrap:
@@ -70,12 +71,13 @@ jobs:
         path: .venv
         key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
     - name: Install dependencies
-      env:
-          CLUSTER_PASSWORD: ${{ secrets.cluster_password }}
       run: |
-        poetry install
+        poetry install --no-interaction --no-root
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+    - name: Run command
+      run: |
         poetry run create-inventory-yaml 
         mv ${OUTPUT_INVETORY_YAML} ${ANSIBLE_INVENTORY_YAML}
+        ls -la 
         ansible-playbook site.yml --extra-vars "cluster_password=$CLUSTER_PASSWORD ansible_sudo_pass=$CLUSTER_PASSWORD"
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
 
