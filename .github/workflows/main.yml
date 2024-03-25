@@ -5,7 +5,7 @@ env:
   PROXMOX_TOKEN_SECRET: ${{ secrets.proxmox_token_secret }}
   PROXMOX_TOKEN_ID: ${{ secrets.proxmox_token_id }}
   HOSTS_MAP_JSON: hosts_map.json
-  OUTPUT_INVETORY_YAML: inventory.yml 
+  OUTPUT_INVETORY_YAML: inventory.yml
   ANSIBLE_INVENTORY_YAML: ansible/inventory/alma_cluster/inventory.yml
   CLUSTER_PASSWORD: ${{ secrets.cluster_password }}
 
@@ -76,8 +76,4 @@ jobs:
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
     - name: Run command
       run: |
-        poetry run create-inventory-yaml 
-        mv ${OUTPUT_INVETORY_YAML} ${ANSIBLE_INVENTORY_YAML}
-        ls -la 
-        ansible-playbook site.yml --extra-vars "cluster_password=$CLUSTER_PASSWORD ansible_sudo_pass=$CLUSTER_PASSWORD"
-
+        poetry run create-inventory-yaml
