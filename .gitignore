@@ -12,3 +12,7 @@ admin.conf
 
 # ACT ignores
 .secrets
+
+
+# Python ignores
+*/*/__pycache__

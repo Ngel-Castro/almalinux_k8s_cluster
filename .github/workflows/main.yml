@@ -20,8 +20,6 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
 
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.terraform-output.hostsmap }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up AWS Credentials
@@ -45,19 +43,28 @@ jobs:
     - name: Terraform outputs
       id: terraform-output
       run: |
-        outputs=$(terraform output -json hosts_map)
-        echo "hostsmap=$outputs" >> "$GITHUB_OUTPUT"
+        echo "$(terraform output -json hosts_map)" >> ${HOSTS_MAP_JSON}
+        mkdir -p artifacts/
+        mv ${HOSTS_MAP_JSON} artifacts/
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: artifacts
+        path: terraform/clusters/proxmox/artifacts/
+
   create-inventory-file:
     needs: [terraform-bootstrap]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: write hosts
-      run: |
-        echo $OUTPUT1 >> ${HOSTS_MAP_JSON}
-      env:
-        OUTPUT1: ${{needs.terraform-bootstrap.outputs.output1}}
-        OUTPUT2: ${{needs.terraform-bootstrap.outputs.output2}}
+
+    - name: Download a single artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: artifacts
+
+    - name: Checking artifacts
+      run: ls -la
 
     - name: Install and configure Poetry
       uses: snok/install-poetry@v1

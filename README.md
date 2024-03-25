@@ -67,5 +67,5 @@ cluster_password=YourPassword                 # < Admin user for the VMS
 ```
 export DOCKER_HOST=unix://$HOME/.rd/docker.sock
 export tfvars=/Users/angel.castrobasurto/Projects/almalinux_k8s_cluster/terraform/clusters/proxmox/env/homelab/terraform.tfvars
-act --secret-file=.secrets --env TFVARS=${tfvars}
+act --secret-file=.secrets --env TFVARS=${tfvars} --artifact-server-path /tmp/artifacts
 ```
