@@ -63,9 +63,6 @@ jobs:
       with:
         name: artifacts
 
-    - name: Checking artifacts
-      run: ls -la
-
     - name: Install and configure Poetry
       uses: snok/install-poetry@v1
       with:
@@ -85,4 +82,11 @@ jobs:
     - name: Run inventory script
       run: |
         poetry run create-inventory-yaml
-        ansible-playbook site.yml --extra-vars "cluster_password=$CLUSTER_PASSWORD ansible_sudo_pass=$CLUSTER_PASSWORD"
+
+    - name: Run playbook
+      uses: dawidd6/action-ansible-playbook@v2
+      run: poetry shell
+      with:
+        playbook: site.yml
+        options: |
+          --extra-vars "cluster_password=$CLUSTER_PASSWORD ansible_sudo_pass=$CLUSTER_PASSWORD"
