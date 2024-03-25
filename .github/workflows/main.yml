@@ -21,7 +21,8 @@ jobs:
 
     runs-on: ubuntu-latest
     outputs:
-      hosts_map: ${{ steps.terraform-output.hosts_map }}
+      output1: ${{ steps.terraform-output.hosts_map }}
+      output2: ${{ steps.step2.outputs.test }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up AWS Credentials
@@ -47,6 +48,8 @@ jobs:
       run: |
         echo "hosts_map=$(terraform output -json hosts_map)" >> "$GITHUB_OUTPUT"
 
+    - id: step2
+      run: echo "test=imanoutput" >> "$GITHUB_OUTPUT"
   create-inventory-file:
     needs: [terraform-bootstrap]
     runs-on: ubuntu-latest
@@ -55,11 +58,12 @@ jobs:
     - name: write hosts
       run: |
         echo $HOSTS_MAP >> ${HOSTS_MAP_JSON}
-        echo $HOSTS_MAP
+        echo $OUTPUT2
         ls -la 
         cat ${HOSTS_MAP_JSON}
       env:
-        HOSTS_MAP: ${{needs.terraform-bootstrap.outputs.hosts_map}}
+        HOSTS_MAP: ${{needs.terraform-bootstrap.outputs.output1}}
+        OUTPUT2: ${{needs.terraform-bootstrap.outputs.output2}}
 
     - name: Install and configure Poetry
       uses: snok/install-poetry@v1
