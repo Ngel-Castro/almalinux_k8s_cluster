@@ -21,7 +21,7 @@ jobs:
 
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{ steps.terraform-output.hosts_map }}
+      output1: ${{ steps.terraform-output.hosts }}
       output2: ${{ steps.step2.outputs.test }}
     steps:
     - uses: actions/checkout@v2
@@ -46,7 +46,7 @@ jobs:
     - name: Terraform outputs
       id: terraform-output
       run: |
-        echo "hosts_map=$(terraform output -json hosts_map)" >> "$GITHUB_OUTPUT"
+        echo "hosts=$(terraform output -json hosts_map)" >> "$GITHUB_OUTPUT"
 
     - id: step2
       run: echo "test=imanoutput" >> "$GITHUB_OUTPUT"
@@ -57,12 +57,12 @@ jobs:
     - uses: actions/checkout@v2
     - name: write hosts
       run: |
-        echo $HOSTS_MAP >> ${HOSTS_MAP_JSON}
+        echo $OUTPUT1 >> ${HOSTS_MAP_JSON}
         echo $OUTPUT2
         ls -la 
         cat ${HOSTS_MAP_JSON}
       env:
-        HOSTS_MAP: ${{needs.terraform-bootstrap.outputs.output1}}
+        OUTPUT1: ${{needs.terraform-bootstrap.outputs.output1}}
         OUTPUT2: ${{needs.terraform-bootstrap.outputs.output2}}
 
     - name: Install and configure Poetry
