@@ -54,7 +54,7 @@ def generate_yaml_config(hosts_map):
 yaml_config = generate_yaml_config(hosts_map)
 
 # Save the configuration to a file
-with open("inventory.yml", "w") as file:
+with open("ansible/inventory/alma_cluster/inventory.yml", "w") as file:
     file.write(yaml_config)
 
 # The above code saves the YAML configuration to 'ansible_inventory.yml' in the current directory.
