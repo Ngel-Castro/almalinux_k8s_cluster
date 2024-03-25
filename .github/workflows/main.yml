@@ -20,7 +20,7 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
 
     runs-on: ubuntu-latest
-    output:
+    outputs:
       hosts_map: ${{ steps.step1.terraform-output.hosts_map }}
     steps:
     - uses: actions/checkout@v2
