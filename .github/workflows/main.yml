@@ -55,6 +55,7 @@ jobs:
     - name: write hosts
       run: |
         echo $HOSTS_MAP >> ${HOSTS_MAP_JSON}
+        cat ${HOSTS_MAP_JSON}
       env:
         HOSTS_MAP: ${{needs.terraform-bootstrap.outputs.hosts_map}}
 
@@ -70,10 +71,9 @@ jobs:
       with:
         path: .venv
         key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+
     - name: Install dependencies
-      run: |
-        poetry install --no-interaction --no-root
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-    - name: Run command
-      run: |
-        poetry run create-inventory-yaml
+      run: poetry install
+
+    - name: Run inventory script
+      run: poetry run create-inventory-yaml
