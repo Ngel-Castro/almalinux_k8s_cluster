@@ -21,8 +21,7 @@ jobs:
 
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{ steps.terraform-output.hosts }}
-      output2: ${{ steps.step2.outputs.test }}
+      output1: ${{ steps.terraform-output.hostsmap }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up AWS Credentials
@@ -46,10 +45,8 @@ jobs:
     - name: Terraform outputs
       id: terraform-output
       run: |
-        echo "hosts=$(terraform output -json hosts_map)" >> "$GITHUB_OUTPUT"
-
-    - id: step2
-      run: echo "test=imanoutput" >> "$GITHUB_OUTPUT"
+        echo "outputs=$(terraform output -json hosts_map)"
+        echo "hostsmap=$outputs" >> "$GITHUB_OUTPUT"
   create-inventory-file:
     needs: [terraform-bootstrap]
     runs-on: ubuntu-latest
@@ -58,9 +55,6 @@ jobs:
     - name: write hosts
       run: |
         echo $OUTPUT1 >> ${HOSTS_MAP_JSON}
-        echo $OUTPUT2
-        ls -la 
-        cat ${HOSTS_MAP_JSON}
       env:
         OUTPUT1: ${{needs.terraform-bootstrap.outputs.output1}}
         OUTPUT2: ${{needs.terraform-bootstrap.outputs.output2}}
