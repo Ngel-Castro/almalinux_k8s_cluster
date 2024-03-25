@@ -21,7 +21,7 @@ jobs:
 
     runs-on: ubuntu-latest
     outputs:
-      hosts_map: ${{ steps.step1.terraform-output.hosts_map }}
+      hosts_map: ${{ steps.terraform-output.hosts_map }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up AWS Credentials
