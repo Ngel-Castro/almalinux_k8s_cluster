@@ -45,7 +45,7 @@ jobs:
     - name: Terraform outputs
       id: terraform-output
       run: |
-        echo "outputs=$(terraform output -json hosts_map)"
+        outputs=$(terraform output -json hosts_map)
         echo "hostsmap=$outputs" >> "$GITHUB_OUTPUT"
   create-inventory-file:
     needs: [terraform-bootstrap]
