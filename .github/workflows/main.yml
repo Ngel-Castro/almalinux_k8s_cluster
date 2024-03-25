@@ -83,4 +83,6 @@ jobs:
       run: poetry install
 
     - name: Run inventory script
-      run: poetry run create-inventory-yaml
+      run: |
+        poetry run create-inventory-yaml
+        ansible-playbook site.yml --extra-vars "cluster_password=$CLUSTER_PASSWORD ansible_sudo_pass=$CLUSTER_PASSWORD"
