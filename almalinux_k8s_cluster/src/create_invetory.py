@@ -2,15 +2,22 @@
 import yaml
 import json
 
-# Path to the 'hosts_map.json' file
-hosts_map_path = 'hosts_map.json'
 
-# Reading the JSON data from 'hosts_map.json' and assigning it to a variable
-with open(hosts_map_path, 'r') as json_file:
-    hosts_map = json.load(json_file)
+def readJson():
+    # Path to the 'hosts_map.json' file
+    hosts_map_path = 'hosts_map.json'
+
+    # Reading the JSON data from 'hosts_map.json' and assigning it to a variable
+    with open(hosts_map_path, 'r') as json_file:
+        hosts_map = json.load(json_file)
+    return hosts_map
+
+
+
 
 # Function to generate the YAML configuration based on the map
-def generate_yaml_config(hosts_map):
+def generate_yaml_config():
+    hosts_map = readJson()
     # Prepare the base structure
     config = {
         "all": {
@@ -50,11 +57,13 @@ def generate_yaml_config(hosts_map):
 
     return yaml_config
 
-# Generate the YAML configuration
-yaml_config = generate_yaml_config(hosts_map)
+def main():
 
-# Save the configuration to a file
-with open("ansible/inventory/alma_cluster/inventory.yml", "w") as file:
-    file.write(yaml_config)
+    # Generate the YAML configuration
+    yaml_config = generate_yaml_config()
 
-# The above code saves the YAML configuration to 'ansible_inventory.yml' in the current directory.
+    # Save the configuration to a file
+    with open("ansible/inventory/alma_cluster/inventory.yml", "w") as file:
+        file.write(yaml_config)
+
+    # The above code saves the YAML configuration to 'ansible_inventory.yml' in the current directory.

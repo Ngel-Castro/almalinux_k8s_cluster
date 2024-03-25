@@ -20,4 +20,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-create-inventory-yaml = "almalinux_k8s_cluster.src.create_invetory:generate_yaml_config"
+create-inventory-yaml = "almalinux_k8s_cluster.src.create_invetory:main"
