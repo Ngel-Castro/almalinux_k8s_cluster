@@ -41,7 +41,7 @@ def generate_yaml_config():
         config["all"]["children"]["alma_cluster"]["children"]["controller"]["hosts"][controller_name] = {
             "ansible_host": ip_address,
             "ansible_user": "{{ admin_user }}",
-            "ansible_password": "{{ cluster_password }}"
+            "ansible_ssh_private_key": "{{ cluster_ssh_key }}"
         }
 
     # Populate workers
@@ -49,7 +49,7 @@ def generate_yaml_config():
         config["all"]["children"]["alma_cluster"]["children"]["worker"]["hosts"][worker_name] = {
             "ansible_host": ip_address,
             "ansible_user": "{{ admin_user }}",
-            "ansible_password": "{{ cluster_password }}"
+            "ansible_ssh_private_key": "{{ cluster_ssh_key }}"
         }
 
     # Convert the config dictionary to a YAML formatted string

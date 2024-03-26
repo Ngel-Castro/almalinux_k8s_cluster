@@ -7,18 +7,22 @@ all:
             controller1:
               ansible_host: 192.168.0.142
               ansible_user: '{{ admin_user }}'
-              ansible_password: '{{ cluster_password }}'
+              #ansible_password: '{{ cluster_password }}'
+              ansible_ssh_private_key: '{{ cluster_ssh_key }}'
             controller2:
               ansible_host: 192.168.0.38
               ansible_user: '{{ admin_user }}'
-              ansible_password: '{{ cluster_password }}'
+              #ansible_password: '{{ cluster_password }}'
+              ansible_ssh_private_key: '{{ cluster_ssh_key }}'
         worker:
           hosts:
             worker1:
               ansible_host: 192.168.0.66
               ansible_user: '{{ admin_user }}'
-              ansible_password: '{{ cluster_password }}'
+              #ansible_password: '{{ cluster_password }}'
+              ansible_ssh_private_key: '{{ cluster_ssh_key }}'
             worker2:
               ansible_host: 192.168.0.166
               ansible_user: '{{ admin_user }}'
-              ansible_password: '{{ cluster_password }}'
+              #ansible_password: '{{ cluster_password }}'
+              ansible_ssh_private_key: '{{ cluster_ssh_key }}'
