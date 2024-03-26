@@ -33,17 +33,17 @@ That should make your nodes ready to run workloads.
 
 ```
 cd alma-k8s
-ansible all -m ping -v --extra-vars "cluster_password=$CLUSTER_PASSWORD"
+ansible all -m ping -v --extra-vars "cluster_ssh_key=$SSH_KEY"
 ```
 
 ## Running playbook
 This could be the first run since you dont have nopassword in visudo the first time you create the cluster.
 ```
-ansible-playbook site.yml --extra-vars "cluster_password=$CLUSTER_PASSWORD ansible_sudo_pass=$CLUSTER_PASSWORD"
+ansible-playbook site.yml --extra-vars "cluster_ssh_key=$SSH_KEY ansible_sudo_pass=$CLUSTER_PASSWORD"
 ```
 After having run the second time you may only use
 ```
-ansible-playbook site.yml --extra-vars "cluster_password=$CLUSTER_PASSWORD"
+ansible-playbook site.yml --extra-vars "cluster_ssh_key=$SSH_KEY"
 ```
 
 ### Argo CD installation
@@ -62,6 +62,8 @@ Create your `.secrets` file with content:
 proxmox_token_secret=YourProxmoxSecretToken   # Refer to proxmox provider documentantion
 proxmox_token_id=YourProxmoxIDTerraform       # Refer to proxmox provider documentantion
 cluster_password=YourPassword                 # < Admin user for the VMS
+aws_access_key=AWSKeyId                       # Get it from AWS
+aws_secret_key=AWSSecret                      # Get it from AWS
 ```
 
 ```

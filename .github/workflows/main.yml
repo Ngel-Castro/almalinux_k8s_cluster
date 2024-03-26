@@ -6,6 +6,7 @@ env:
   PROXMOX_TOKEN_ID: ${{ secrets.proxmox_token_id }}
   HOSTS_MAP_JSON: hosts_map.json
   CLUSTER_PASSWORD: ${{ secrets.cluster_password }}
+  SSH_KEY: ${{ secrets.ssh_key }}
 
 jobs:
   terraform-bootstrap:
@@ -78,6 +79,9 @@ jobs:
       run: poetry install
 
     - name: Run inventory script
+      run: poetry run create-inventory-yaml
+
+    - name: Run ansible
       run: |
-        poetry run create-inventory-yaml
-        poetry run ansible-playbook site.yml --extra-vars "cluster_password=$CLUSTER_PASSWORD ansible_sudo_pass=$CLUSTER_PASSWORD"
+        echo $SSH_KEY | base64 -d  > key.pem && chmod 600 key.pem
+        poetry run ansible-playbook site.yml --extra-vars "cluster_ssh_key=key.pem ansible_sudo_pass=$CLUSTER_PASSWORD"

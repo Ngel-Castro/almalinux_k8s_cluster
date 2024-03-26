@@ -1,15 +1,14 @@
 ---
-- name: Add IP address of all hosts to all hosts
-  ansible.builtin.lineinfile:
-    dest: /etc/hosts
-    regexp: '.*{{ item }}$'
-    line: "{{ hostvars[item].ansible_host }} {{ item }}.{{ domain }}"
-    state: present
-  when: hostvars[item].ansible_host is defined
-  with_items: "{{ groups.all }}"
+# - name: Add IP address of all hosts to all hosts
+#   ansible.builtin.lineinfile:
+#     dest: /etc/hosts
+#     regexp: '.*{{ item }}$'
+#     line: "{{ hostvars[item].ansible_host }} {{ item }}.{{ domain }}"
+#     state: present
+#   when: hostvars[item].ansible_host is defined
+#   with_items: "{{ groups.all }}"
 
 - name: Apply Calico manifest
   command: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.2/manifests/calico.yaml
   environment:
-    KUBECONFIG: "{{ playbook_dir }}/admin.conf"
-  delegate_to: localhost
+    KUBECONFIG: "/etc/kubernetes/admin.conf"
