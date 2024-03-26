@@ -5,3 +5,5 @@ target_node       = "proxmox"
 storage           = "samsung-ssd"
 full_clone        = true
 template_name     = "alma-cluster-stable"
+
+# TODO: Separate values for each type of node `controller` and `worker`

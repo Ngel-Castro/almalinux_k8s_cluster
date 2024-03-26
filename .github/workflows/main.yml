@@ -1,0 +1,87 @@
+name: cluster boostrap locally
+on: fork
+
+env:
+  PROXMOX_TOKEN_SECRET: ${{ secrets.proxmox_token_secret }}
+  PROXMOX_TOKEN_ID: ${{ secrets.proxmox_token_id }}
+  HOSTS_MAP_JSON: hosts_map.json
+  CLUSTER_PASSWORD: ${{ secrets.cluster_password }}
+  SSH_KEY: ${{ secrets.ssh_key }}
+
+jobs:
+  terraform-bootstrap:
+    defaults:
+      run:
+        working-directory: terraform/clusters/proxmox
+      env:
+        AWS_DEFAULT_REGION: us-east-1
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_key }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key }}
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.aws_access_key }}
+        aws-secret-access-key: ${{ secrets.aws_secret_key }}
+        aws-region: us-east-1
+
+    - uses: hashicorp/setup-terraform@v3
+
+    - name: Terraform init
+      run: terraform init
+
+    - name: Terraform plan
+      run: terraform plan -var-file=${TFVARS} -var="proxmox_token_id=${PROXMOX_TOKEN_ID}" -var="proxmox_token_secret=${PROXMOX_TOKEN_SECRET}"
+
+    - name: Terraform apply
+      run: terraform apply --auto-approve -var-file=${TFVARS} -var="proxmox_token_id=${PROXMOX_TOKEN_ID}" -var="proxmox_token_secret=${PROXMOX_TOKEN_SECRET}"
+
+    - name: Terraform outputs
+      id: terraform-output
+      run: |
+        echo "$(terraform output -json hosts_map)" >> ${HOSTS_MAP_JSON}
+        mkdir -p artifacts/
+        mv ${HOSTS_MAP_JSON} artifacts/
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: artifacts
+        path: terraform/clusters/proxmox/artifacts/
+
+  create-inventory-file:
+    needs: [terraform-bootstrap]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Download a single artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: artifacts
+
+    - name: Install and configure Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: 1.7.1
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+    - name: Set up cache
+      uses: actions/cache@v2
+      id: cached-poetry-dependencies
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install dependencies
+      run: poetry install
+
+    - name: Run inventory script
+      run: poetry run create-inventory-yaml
+
+    - name: Run ansible
+      run: |
+        echo $SSH_KEY | base64 -d  > key.pem && chmod 600 key.pem
+        poetry run ansible-playbook site.yml --extra-vars "cluster_ssh_key=key.pem ansible_sudo_pass=$CLUSTER_PASSWORD"

@@ -9,3 +9,11 @@
 
 # Local Kubeconfig
 admin.conf
+
+# ACT ignores
+.secrets
+
+
+# Python ignores
+*/*/__pycache__
+*/__pycache__

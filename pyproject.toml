@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "alma-k8s"
+name = "almalinux_k8s_cluster"
 version = "0.1.0"
 description = ""
 authors = ["acastro <castrobasurto.angel@gmail.com>"]
@@ -10,8 +10,14 @@ python = "^3.10"
 ansible = "^9.3.0"
 ansible-lint = { version = "24.2.0", markers = 'platform_system != "Windows"' }
 pre-commit = "^3.6.2"
+pyyaml = "^6.0.1"
+jq = "^1.7.0"
+pyjson = "^1.4.1"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+create-inventory-yaml = "almalinux_k8s_cluster.src.create_invetory:main"

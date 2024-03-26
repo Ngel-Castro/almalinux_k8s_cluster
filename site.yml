@@ -16,7 +16,7 @@
   roles:
     - role: k8s/worker
 
-- hosts: localhost
+- hosts: controller
   become: true
   roles:
     - role: k8s/cluster
