@@ -5,8 +5,6 @@ env:
   PROXMOX_TOKEN_SECRET: ${{ secrets.proxmox_token_secret }}
   PROXMOX_TOKEN_ID: ${{ secrets.proxmox_token_id }}
   HOSTS_MAP_JSON: hosts_map.json
-  OUTPUT_INVETORY_YAML: inventory.yml
-  ANSIBLE_INVENTORY_YAML: ansible/inventory/alma_cluster/inventory.yml
   CLUSTER_PASSWORD: ${{ secrets.cluster_password }}
 
 jobs:
@@ -77,15 +75,9 @@ jobs:
         key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
 
     - name: Install dependencies
-      run: poetry install
+      run: poetry install --no-root
 
     - name: Run inventory script
       run: |
         poetry run create-inventory-yaml
-
-    - name: Run playbook
-      uses: dawidd6/action-ansible-playbook@v4
-      with:
-        playbook: site.yml
-        options: |
-          --extra-vars "cluster_password=$CLUSTER_PASSWORD ansible_sudo_pass=$CLUSTER_PASSWORD"
+        ansible-playbook site.yml --extra-vars "cluster_password=$CLUSTER_PASSWORD ansible_sudo_pass=$CLUSTER_PASSWORD"
