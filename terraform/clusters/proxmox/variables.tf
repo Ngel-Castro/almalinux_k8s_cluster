@@ -50,10 +50,3 @@ variable "template_name" {
   type        = string
   default     = "cluster-template"
 }
-
-
-variable "template_name" {
-  description = "If you required full clone or not"
-  type        = string
-  default     = "cluster-template"
-}
