@@ -8,7 +8,26 @@
 #   when: hostvars[item].ansible_host is defined
 #   with_items: "{{ groups.all }}"
 
-- name: Apply Calico manifest
-  command: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.2/manifests/calico.yaml
+# - name: Apply Calico manifest
+#   command: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.2/manifests/calico.yaml
+#   environment:
+#     KUBECONFIG: "/etc/kubernetes/admin.conf"
+# From repository
+
+- name: Add cilium repository
+  kubernetes.core.helm_repository:
+    name: stable
+    repo_url: "https://helm.cilium.io/"
+  when: inventory_hostname == 'controller1'
+  environment:
+     KUBECONFIG: "/etc/kubernetes/admin.conf"
+
+- name: Deploy cilium
+  kubernetes.core.helm:
+    name: cilium
+    chart_ref: cilium/cilium
+    chart_version: 1.15.3
+    release_namespace: kube-system
+  when: inventory_hostname == 'controller1'
   environment:
     KUBECONFIG: "/etc/kubernetes/admin.conf"
