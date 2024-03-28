@@ -7,7 +7,10 @@ resource "proxmox_vm_qemu" "controller" {
     scsihw      = "virtio-scsi-single"
     full_clone  = var.full_clone
     agent       = 1
+<<<<<<< HEAD
     qemu_os     = "l26"
+=======
+>>>>>>> 9efb264 (handling qemu agents and getting outputs after creating a VM)
     #ipconfig0   = "dhcp"
 
     ### or for a Clone VM operation
@@ -49,7 +52,10 @@ resource "proxmox_vm_qemu" "worker" {
     scsihw      = "virtio-scsi-single"
     full_clone  = var.full_clone
     agent       = 1
+<<<<<<< HEAD
     qemu_os     = "l26"
+=======
+>>>>>>> 9efb264 (handling qemu agents and getting outputs after creating a VM)
     #ipconfig0   = "dhcp"
 
     ### or for a Clone VM operation
