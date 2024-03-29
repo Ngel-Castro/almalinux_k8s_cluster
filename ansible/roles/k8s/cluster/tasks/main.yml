@@ -30,7 +30,6 @@
     release_namespace: kube-system
     values:
       hubble:
-        listenAddress: ":4244"
         enabled: true
         relay:
           enabled: true
