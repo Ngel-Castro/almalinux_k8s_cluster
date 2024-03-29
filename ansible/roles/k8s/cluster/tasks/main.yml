@@ -16,7 +16,7 @@
 
 - name: Add cilium repository
   kubernetes.core.helm_repository:
-    name: stable
+    name: cilium
     repo_url: "https://helm.cilium.io/"
   when: inventory_hostname == 'controller1'
   environment:
@@ -28,6 +28,16 @@
     chart_ref: cilium/cilium
     chart_version: 1.15.3
     release_namespace: kube-system
+    values:
+      hubble:
+        listenAddress: ":4244"
+        enabled: true
+        relay:
+          enabled: true
+        ui:
+          enabled: true
+    wait: true
+    wait_timeout: "600s"
   when: inventory_hostname == 'controller1'
   environment:
     KUBECONFIG: "/etc/kubernetes/admin.conf"
