@@ -5,15 +5,13 @@ terraform {
       version = "3.0.1-rc1"
     }
   }
-
   backend "s3" {
     bucket         = "proxmox-s3-backend"
-    key            = "proxmox/terraform.tfstate"
+    key            = "proxmox/opentofu.tfstate"
     region         = "us-east-1"  # Change this to your bucket's region
     dynamodb_table = "TerraformLocks"
     encrypt        = true
   }
-
 }
 
 provider "proxmox" {
